@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require "pg_queue"
+
+class MailQueue
+  def self.perform(email)
+    puts email
+  end
+end
+
+worker = PgQueue::Worker.new
+
+["INT", "TERM"].each do |signal|
+  trap(signal) do
+    worker.stop
+  end
+end
+
+worker.start
