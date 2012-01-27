@@ -1,6 +1,7 @@
 require "pg_queue/version"
 require "pg"
 require "logger"
+require "multi_json"
 
 module PgQueue
   autoload :Worker, "pg_queue/worker"

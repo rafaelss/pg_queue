@@ -18,14 +18,18 @@ module PgQueue
       exec("DELETE FROM #{table_name} WHERE id = $1", [job.id])
     end
 
-    def notify(key)
-      exec("NOTIFY #{key}")
-    end
-
     def first(sql)
       result = exec(sql)
       return nil unless result.count > 0
       result[0]
+    end
+
+    def notify(key)
+      exec("NOTIFY #{key}")
+    end
+
+    def listen(key)
+      exec("LISTEN #{key}")
     end
   end
 end
