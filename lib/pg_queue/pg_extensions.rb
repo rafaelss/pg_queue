@@ -14,8 +14,8 @@ module PgQueue
 
     def delete(table_name, where)
       i = 0
-      conditions = where.map { |k, v| i += 1; "#{k} = $#{i}" }
-      exec("DELETE FROM #{table_name} WHERE id = $1", [job.id])
+      conditions = where.map { |k, v| i += 1; "#{k} = $#{i}" }.join(" AND ")
+      exec("DELETE FROM #{table_name} WHERE #{conditions}", where.values)
     end
 
     def first(sql)
