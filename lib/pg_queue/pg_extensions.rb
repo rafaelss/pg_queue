@@ -24,8 +24,10 @@ module PgQueue
       result[0]
     end
 
-    def notify(key)
-      exec("NOTIFY #{key}")
+    def notify(key, message = nil)
+      sql = "NOTIFY #{key}"
+      sql << ", '#{message}'" if message
+      exec(sql)
     end
 
     def listen(key)
