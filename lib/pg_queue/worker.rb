@@ -1,11 +1,10 @@
 module PgQueue
   class Worker
-    attr_reader :connection, :interval
+    attr_reader :connection
 
     def initialize
       @connection = new_connection
       @queue = PgQueue::Queue.new(@connection)
-      @interval = 5
     end
 
     def start
