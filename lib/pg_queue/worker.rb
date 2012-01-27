@@ -18,13 +18,13 @@ module PgQueue
           next
         end
 
-        puts "waiting for jobs"
+        PgQueue.logger.debug("waiting for jobs")
         connection.wait_for_notify do |event, pid, payload|
           if payload == "stop"
-            puts "stop notify received"
+            PgQueue.logger.debug("stop notify received")
             stop
           else
-            puts "let's perform some jobs"
+            PgQueue.logger.debug("let's perform some jobs")
           end
         end
       end
@@ -55,11 +55,11 @@ module PgQueue
 
     def perform(job)
       begin
-        puts job.inspect
+        PgQueue.logger.debug(job.inspect)
         job.perform
       rescue => ex
-        puts ex
-        puts ex.message
+        PgQueue.logger.fatal(ex)
+        PgQueue.logger.fatal(ex.message)
       end
     end
   end
