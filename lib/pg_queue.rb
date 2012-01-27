@@ -26,4 +26,19 @@ module PgQueue
     @connection = object
   end
 
+  def self.enqueue(klass, *args)
+    id = connection.insert(:pg_queue_jobs, { :class_name => klass.name, :args => MultiJson.encode(args) }, "id")
+    logger.debug("enqueued #{id}")
+    connection.notify(:pg_queue_jobs)
+  end
+
+  def self.dequeue
+    result = connection.first("SELECT id, klass, args FROM pg_queue_jobs LIMIT 1")
+    return nil unless result
+
+    PgQueue::Job.new(result).tap do |job|
+      PgQueue.logger.debug("dequeued #{job.id}")
+      connection.delete(:pg_queue_jobs, :id => job.id)
+    end
+  end
 end
