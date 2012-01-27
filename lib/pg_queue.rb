@@ -34,7 +34,7 @@ module PgQueue
   end
 
   def self.dequeue
-    result = connection.first("SELECT id, klass, args FROM pg_queue_jobs LIMIT 1")
+    result = connection.first("SELECT id, class_name, args FROM pg_queue_jobs LIMIT 1")
     return nil unless result
 
     PgQueue::Job.new(result).tap do |job|
