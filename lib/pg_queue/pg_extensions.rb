@@ -31,5 +31,9 @@ module PgQueue
     def listen(key)
       exec("LISTEN #{key}")
     end
+
+    def unlisten(key)
+      exec("UNLISTEN #{key}")
+    end
   end
 end

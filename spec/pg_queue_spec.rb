@@ -28,6 +28,7 @@ describe PgQueue do
       it { should respond_to(:delete) }
       it { should respond_to(:first) }
       it { should respond_to(:listen) }
+      it { should respond_to(:unlisten) }
     end
 
     it "defines a new connection" do
