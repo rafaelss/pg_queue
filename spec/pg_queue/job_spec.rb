@@ -12,6 +12,6 @@ describe PgQueue::Job do
   end
 
   its(:id) { should == 1 }
-  its(:class_name) { should == MyQueue }
+  its(:klass) { should == MyQueue }
   its(:args) { should == [1, "two"] }
 end
