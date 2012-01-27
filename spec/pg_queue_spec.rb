@@ -20,6 +20,14 @@ describe PgQueue do
   context "database connection" do
     its(:connection) { should be_instance_of(PGconn) }
 
+    context "extensions" do
+      subject { described_class.connection }
+      it { should respond_to(:insert) }
+      it { should respond_to(:notify) }
+      it { should respond_to(:delete) }
+      it { should respond_to(:first) }
+    end
+
     it "defines a new connection" do
       described_class.connection = MyDbConnection.new
       described_class.connection.should be_instance_of(MyDbConnection)
