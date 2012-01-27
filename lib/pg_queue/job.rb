@@ -2,19 +2,18 @@ require "multi_json"
 
 module PgQueue
   class Job
-    attr_reader :id, :klass, :args
+    attr_reader :id, :class_name, :args
 
     def initialize(attributes)
       @id = attributes["id"]
-      puts "new job #{@id}"
-      @klass = Object.const_get(attributes["klass"])
+      @class_name = Object.const_get(attributes["class_name"])
       @args = MultiJson.decode(attributes["args"])
     end
 
     def perform
-      puts "performing"
+      PgQueue.logger.debug("performing job #{@id}")
       klass.perform(*args)
-      puts "performed"
+      PgQueue.logger.debug("job #{@id} performed")
     end
   end
 end
