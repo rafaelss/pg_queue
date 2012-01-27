@@ -1,3 +1,5 @@
+require "multi_json"
+
 module PgQueue
   class Job
     attr_reader :id, :klass, :args
@@ -6,7 +8,7 @@ module PgQueue
       @id = attributes["id"]
       puts "new job #{@id}"
       @klass = Object.const_get(attributes["klass"])
-      @args = JSON.load(attributes["args"])
+      @args = MultiJson.decode(attributes["args"])
     end
 
     def perform

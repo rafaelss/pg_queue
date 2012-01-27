@@ -10,7 +10,7 @@ module PgQueue
 
     def enqueue(klass, *args)
       sql = "INSERT INTO pg_queue_jobs (klass, args) VALUES ($1, $2) RETURNING id"
-      id = connection.exec(sql, [klass.name, JSON.dump(args)]).getvalue(0, 0)
+      id = connection.exec(sql, [klass.name, MultiJson.encode(args)]).getvalue(0, 0)
       puts "enqueued #{id}"
       connection.exec("NOTIFY pg_queue_jobs")
     end

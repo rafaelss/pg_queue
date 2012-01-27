@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = PgQueue::VERSION
 
   gem.add_dependency "pg", "~> 0.12.2"
+  gem.add_dependency "multi_json", "~> 1.0.4"
 
   gem.add_development_dependency "rspec", "~> 2.8.0"
 end
