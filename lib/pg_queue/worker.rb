@@ -1,25 +1,18 @@
 module PgQueue
   class Worker
-    attr_reader :connection
-
-    def initialize
-      @connection = new_connection
-      @queue = PgQueue::Queue.new(@connection)
-    end
-
     def start
       @running = true
 
-      listen
+      PgQueue.connection.listen(:pg_queue_jobs)
       while running?
-        job = @queue.dequeue
+        job = PgQueue.dequeue
         if job
           perform(job)
           next
         end
 
         PgQueue.logger.debug("waiting for jobs")
-        connection.wait_for_notify do |event, pid, payload|
+        PgQueue.connection.wait_for_notify do |event, pid, payload|
           if payload == "stop"
             PgQueue.logger.debug("stop notify received")
             stop
@@ -28,19 +21,13 @@ module PgQueue
           end
         end
       end
-    end
-
-    def listen
-      connection.exec("LISTEN pg_queue_jobs")
-    end
-
-    def unlisten
-      connection.exec("UNLISTEN pg_queue_jobs")
+      PgQueue.connection.unlisten(:pg_queue_jobs)
     end
 
     def stop
       @running = false
-      new_connection.exec("NOTIFY pg_queue_jobs, 'stop'")
+      PgQueue.connection = nil
+      PgQueue.connection.notify(:pg_queue_jobs, "stop")
     end
 
     def running?
@@ -48,10 +35,6 @@ module PgQueue
     end
 
     protected
-
-    def new_connection
-      PGconn.open(:dbname => 'pg_queue_test')
-    end
 
     def perform(job)
       begin
