@@ -14,4 +14,9 @@ describe PgQueue::Job do
   its(:id) { should == 1 }
   its(:klass) { should == MyQueue }
   its(:args) { should == [1, "two"] }
+
+  it "performs the job" do
+    subject.klass.should_receive(:perform)
+    subject.perform
+  end
 end
