@@ -1,10 +1,14 @@
 require "spec_helper"
 
 class MyLogger; end
-class MyDbConnection; end
+class MyDbConnection; def exec; end; end
 class MyQueue; end
 
 describe PgQueue do
+  before do
+    described_class.connection = MyDbConnection.new
+  end
+
   context "logging" do
     its(:logger) { should be_instance_of(Logger) }
 
@@ -19,25 +23,17 @@ describe PgQueue do
   end
 
   context "database connection" do
-    its(:connection) { should be_instance_of(PGconn) }
+    its(:connection) { should be_instance_of(MyDbConnection) }
 
     context "extensions" do
       subject { described_class.connection }
+
       it { should respond_to(:insert) }
       it { should respond_to(:notify) }
       it { should respond_to(:delete) }
       it { should respond_to(:first) }
       it { should respond_to(:listen) }
       it { should respond_to(:unlisten) }
-    end
-
-    it "defines a new connection" do
-      described_class.connection = MyDbConnection.new
-      described_class.connection.should be_instance_of(MyDbConnection)
-    end
-
-    after do
-      described_class.connection = nil
     end
   end
 

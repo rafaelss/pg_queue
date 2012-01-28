@@ -17,14 +17,13 @@ module PgQueue
   end
 
   def self.connection
-    @connection ||= begin
-      conn = PGconn.open(:dbname => 'pg_queue_test')
-      conn.extend(PgQueue::PgExtensions)
-    end
+    @connection
   end
 
   def self.connection=(object)
-    @connection = object
+    @connection = object.tap do |conn|
+      conn.extend(PgQueue::PgExtensions) if object.respond_to?(:exec)
+    end
   end
 
   def self.enqueue(klass, *args)
