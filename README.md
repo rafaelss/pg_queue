@@ -1,6 +1,6 @@
 # PgQueue
 
-TODO: Write a gem description
+Background jobs using PostgreSQL's LISTEN/NOTIFY
 
 ## Installation
 
@@ -18,7 +18,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Rails
+
+Create an initializer with the configuration
+
+    PgQueue.connection = ActiveRecord::Base.connection.raw_connection
+    PgQueue.logger = Rails.logger
+
+Add this line in the Rakefile
+
+    require "pg_queue/tasks"
+
+And start the worker runnning
+
+    rake environment pg_queue:work
+
+That's it! You're now able to enqueue your jobs. To do that, just call
+
+    PgQueue.enqueue(MyQueueClass, "string", 1, false) # parameters will be JSON encoded
 
 ## Contributing
 
