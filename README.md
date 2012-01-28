@@ -29,7 +29,7 @@ Add this line in the Rakefile
 
     require "pg_queue/tasks"
 
-And start the worker runnning
+And then start the worker running
 
     rake environment pg_queue:work
 
