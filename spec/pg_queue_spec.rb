@@ -35,6 +35,7 @@ describe PgQueue do
       it { should respond_to(:first) }
       it { should respond_to(:listen) }
       it { should respond_to(:unlisten) }
+      it { should respond_to(:new_connection) }
     end
   end
 

@@ -42,8 +42,7 @@ describe PgQueue::Worker do
     end
 
     it "notifies worker to stop" do
-      PgQueue.should_receive(:connection=).with(nil)
-      PgQueue.should_receive(:connection).and_return(connection)
+      PgQueue.connection.should_receive(:new_connection).and_return(connection)
       connection.should_receive(:notify).with(:pg_queue_jobs, "stop")
 
       subject.should be_running

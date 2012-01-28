@@ -37,5 +37,17 @@ module PgQueue
     def unlisten(key)
       exec("UNLISTEN #{key}")
     end
+
+    def new_connection
+      PGconn.open(
+        :host => host,
+        :port => port,
+        :user => user,
+        :password => pass,
+        :dbname => db
+      ).tap do |conn|
+        conn.extend(PgExtensions)
+      end
+    end
   end
 end

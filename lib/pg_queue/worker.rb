@@ -26,8 +26,7 @@ module PgQueue
 
     def stop
       @running = false
-      PgQueue.connection = nil
-      PgQueue.connection.notify(:pg_queue_jobs, "stop")
+      PgQueue.connection.new_connection.notify(:pg_queue_jobs, "stop")
     end
 
     def running?
@@ -43,6 +42,7 @@ module PgQueue
       rescue => ex
         PgQueue.logger.fatal(ex)
         PgQueue.logger.fatal(ex.message)
+        PgQueue.logger.fatal(ex.backtrace)
       end
     end
   end
