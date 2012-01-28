@@ -7,6 +7,7 @@ class MyQueue; end
 describe PgQueue do
   before do
     described_class.connection = MyDbConnection.new
+    described_class.logger = Logger.new("/dev/null")
   end
 
   context "logging" do
