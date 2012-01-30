@@ -11,15 +11,18 @@ describe PgQueue do
   end
 
   context "logging" do
-    its(:logger) { should be_instance_of(Logger) }
-
-    it "defines a new logger" do
-      described_class.logger = MyLogger.new
-      described_class.logger.should be_instance_of(MyLogger)
+    before do
+      described_class.logger = nil
     end
 
     after do
       described_class.logger = nil
+    end
+
+    it "defines a logger" do
+      described_class.logger.should be_instance_of(Logger)
+      described_class.logger = MyLogger.new
+      described_class.logger.should be_instance_of(MyLogger)
     end
   end
 
