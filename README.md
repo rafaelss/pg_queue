@@ -24,6 +24,7 @@ Create an initializer with the configuration
 
     PgQueue.connection = ActiveRecord::Base.connection.raw_connection
     PgQueue.logger = Rails.logger
+    PgQueue.interval = 3 # the number of seconds you want the worker wait after process the job
 
 Add this line in the Rakefile
 
