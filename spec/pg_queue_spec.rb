@@ -39,6 +39,18 @@ describe PgQueue do
     end
   end
 
+  context "interval" do
+    after do
+      described_class.interval = nil
+    end
+
+    it "defines the interval" do
+      described_class.interval.should == 0
+      described_class.interval = 5
+      described_class.interval.should == 5
+    end
+  end
+
   context "enqueuing/dequeuing" do
     let(:connection) { described_class.connection }
     let(:result) { double("result") }

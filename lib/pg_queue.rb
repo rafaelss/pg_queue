@@ -26,6 +26,14 @@ module PgQueue
     end
   end
 
+  def self.interval
+    @interval || 0
+  end
+
+  def self.interval=(seconds)
+    @interval = seconds
+  end
+
   def self.enqueue(klass, *args)
     id = connection.insert(:pg_queue_jobs, { :class_name => klass.name, :args => MultiJson.encode(args) }, "id")
     logger.debug("enqueued #{id}")
