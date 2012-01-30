@@ -8,6 +8,7 @@ module PgQueue
         job = PgQueue.dequeue
         if job
           perform(job)
+          sleep(PgQueue.interval) if PgQueue.interval > 0
           next
         end
 

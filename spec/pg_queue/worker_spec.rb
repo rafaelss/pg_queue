@@ -32,6 +32,32 @@ describe PgQueue::Worker do
         subject.start
       end
     end
+
+    context "with interval" do
+      let(:job) { double("job") }
+
+      before do
+        PgQueue.should_receive(:dequeue).and_return(job)
+        job.should_receive(:perform)
+      end
+
+      after do
+        PgQueue.interval = nil
+      end
+
+      it "should not sleep if an interval is not defined" do
+        subject.should_receive(:sleep).never
+
+        subject.start
+      end
+
+      it "sleeps if an interval is defined" do
+        PgQueue.interval = 5
+        subject.should_receive(:sleep).with(5)
+
+        subject.start
+      end
+    end
   end
 
   context "stoping" do
