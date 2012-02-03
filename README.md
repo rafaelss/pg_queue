@@ -2,6 +2,8 @@
 
 Background jobs using PostgreSQL's LISTEN/NOTIFY
 
+[![Build Status](https://secure.travis-ci.org/rafaelss/pg_queue.png)](http://travis-ci.org/rafaelss/pq_queue)
+
 ## Installation
 
 Add this line to your application's Gemfile:
