@@ -23,4 +23,26 @@ describe PgQueue::Job do
     subject.klass.should_receive(:perform)
     subject.perform
   end
+
+  context "with no hooks" do
+    let(:queue_class) { Object.const_set("QueueWithNoAfterPerformHook", Class.new) }
+
+    it "should not try to call after perform hook" do
+      subject.klass.should_receive(:perform)
+      subject.klass.should_receive(:respond_to?).with(:after_perform).and_return(false)
+      subject.klass.should_receive(:after_perform).never
+      subject.perform
+    end
+  end
+
+  context "with hooks" do
+    let(:queue_class) { Object.const_set("QueueWithAfterPerformHook", Class.new) }
+
+    it "executes the after perform hook" do
+      subject.klass.should_receive(:perform)
+      subject.klass.should_receive(:respond_to?).with(:after_perform).and_return(true)
+      subject.klass.should_receive(:after_perform).once
+      subject.perform
+    end
+  end
 end
