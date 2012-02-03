@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["me@rafaelss.com"]
   gem.description   = %q{Some experimentations with LISTEN/NOTIFY for background jobs}
   gem.summary       = %q{Background jobs using PostgreSQL's LISTEN/NOTIFY}
-  gem.homepage      = "http://github.com/rafaelss/pg_queue"
+  gem.homepage      = "http://rafaelss.github.com/pg_queue/"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
