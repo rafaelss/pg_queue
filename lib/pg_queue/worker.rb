@@ -40,7 +40,7 @@ module PgQueue
       begin
         PgQueue.logger.debug(job.inspect)
         job.perform
-      rescue => ex
+      rescue Object => ex
         PgQueue.logger.fatal(ex)
         PgQueue.logger.fatal(ex.message)
         PgQueue.logger.fatal(ex.backtrace)
