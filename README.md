@@ -18,6 +18,12 @@ Or install it yourself as:
 
     $ gem install pg_queue
 
+Now you need to create the table where jobs will be stored:
+
+    $ rake environment pg_queue:create_table
+
+Run `rake -T pg_queue` for more tasks
+
 ## Usage
 
 ### Rails
@@ -26,7 +32,7 @@ Create an initializer with the configuration
 
     PgQueue.connection = ActiveRecord::Base.connection.raw_connection
     PgQueue.logger = Rails.logger
-    PgQueue.interval = 3 # the number of seconds you want the worker wait after process the job
+    PgQueue.interval = 3 # the number of seconds you want the worker wait after process a job
 
 Add this line in the Rakefile
 
