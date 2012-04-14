@@ -8,7 +8,7 @@ namespace :pg_queue do
       end
     end
 
-    yield
+    yield if block_given?
 
     worker.start
   end
